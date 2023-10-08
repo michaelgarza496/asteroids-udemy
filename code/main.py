@@ -92,7 +92,7 @@ class Meteor(Sprite):
         self.original_image = self.image
         self.rect = self.image.get_rect(center=pos)
         self.mask = pygame.mask.from_surface(self.image)
-        self.rotation = 0
+        self.rotation = 0.0
         self.rotation_speed = randint(400, 600)
 
         # float based position
@@ -146,12 +146,17 @@ clock = pygame.time.Clock()
 # background
 background_surf = pygame.image.load("graphics/background.png").convert()
 
+def create_group(all_groups: list, add_to_all_groups: bool=True) -> Group:
+    g: Group = Group()
+    if add_to_all_groups:
+        all_groups.append(g)
+    return g
 
 # sprite groups
-all_groups = []
-spaceship_group = Group()
-laser_group = Group()
-meteor_group = Group()
+all_groups: list = []
+spaceship_group = create_group(all_groups)
+laser_group = create_group(all_groups)
+meteor_group = create_group(all_groups)
 
 # Sprite creation
 ship = Ship(spaceship_group)
@@ -187,16 +192,19 @@ while True:
     display_surface.blit(background_surf, (0, 0))
 
     # update sprites
-    spaceship_group.update()
-    laser_group.update()
-    meteor_group.update()
-    for g in 
+    # spaceship_group.update()
+    # laser_group.update()
+    # meteor_group.update()
+    for g in all_groups:
+        g.update()
+    for g in all_groups:
+        g.draw(display_surface)
     score.display()
 
     # graphics
-    spaceship_group.draw(display_surface)
-    laser_group.draw(display_surface)
-    meteor_group.draw(display_surface)
+    # spaceship_group.draw(display_surface)
+    # laser_group.draw(display_surface)
+    # meteor_group.draw(display_surface)
 
     # draw the frame
     pygame.display.update()
